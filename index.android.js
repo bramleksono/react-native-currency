@@ -10,22 +10,17 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput
+  TextInput,
 } from 'react-native';
+
+import InputForm from "./ui/inputform.js";
 
 class currency extends Component {
   render() {
     return (
       <View style={styles.column}>
-        <View style={styles.row}>
-          <Text style={styles.welcome}>
-          Input :
-          </Text>
-          <TextInput
-            {...this.props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-            editable = {true}
-            maxLength = {40}
-          />
+      <View style={styles.row}>
+        <InputForm/>
         </View>
         <View style={styles.row}>
           <Text style={styles.welcome}>
