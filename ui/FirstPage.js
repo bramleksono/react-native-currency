@@ -23,7 +23,7 @@ class FirstPage extends Component {
                   toRate: 0.000098786,
                   toAmount: 0,
                   };
-
+    this.getRateFromAPI(this.state.fromCurrency);
     this.calculateOutput = this.calculateOutput.bind(this);
     this.receiveCurrency = this.receiveCurrency.bind(this);
   }
@@ -59,9 +59,10 @@ class FirstPage extends Component {
       });
     }
   }
-
-  render() {
+  componentWillReceiveProps(nextProps) {
     this.getRateFromAPI(this.state.fromCurrency);
+  }
+  render() {
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
