@@ -30,6 +30,7 @@ class FirstPage extends Component {
   }
 
   calculateOutput(inputAmount, toRate) {
+    inputAmount = inputAmount.replace(/\D/g,'');
     var output = inputAmount*toRate;
     this.setState({
       toAmount: output,
