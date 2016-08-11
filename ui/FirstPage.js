@@ -39,10 +39,16 @@ class FirstPage extends Component {
     }
   }
 
-  calculateOutput(inputAmount, toRate) {
+  calculateOutput(inputAmount) {
+    var toRate = 1;
+    if (this.state.fromCurrency != this.state.toCurrency) {
+      toRate = this.exchangeRate.rates[this.state.toCurrency]
+    }
+
     inputAmount = inputAmount.replace(/\D/g,'');
     var output = inputAmount*toRate;
     this.setState({
+      fromAmount: inputAmount,
       toAmount: output,
     });
   }
@@ -61,6 +67,11 @@ class FirstPage extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.getRateFromAPI(this.state.fromCurrency);
+    //reset amount
+    this.setState({
+      fromAmount: "",
+      toAmount: "0",
+    });
   }
   render() {
     return (
@@ -82,7 +93,8 @@ class FirstPage extends Component {
             <View style={styles.column}>
             <Text style={{fontSize: 25,color: 'white',}}>From</Text>
             <TextInput placeholder="Type amount" keyboardType="phone-pad" style={styles.textInput}
-              onChangeText={(fromAmount) => this.calculateOutput(fromAmount, this.exchangeRate.rates[this.state.toCurrency])}
+              onChangeText={(fromAmount) => this.calculateOutput(fromAmount)}
+              value={this.state.fromAmount}
             />
             <Text style={styles.currency}
                 onPress={this.chooseStartCurrency.bind(this)}>{this.state.fromCurrency}</Text>
