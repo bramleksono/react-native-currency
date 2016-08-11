@@ -21,7 +21,10 @@ class FirstPage extends Component {
                   toCurrency: "AUD",
                   fromRate: 1,
                   toRate: 0.000098786,
+<<<<<<< HEAD
                   fromAmount: 0,
+=======
+>>>>>>> a95f26eefc753ea43a148a6b1d73b29377452ed0
                   };
     this.receiveCurrency = this.receiveCurrency.bind(this);
   }
@@ -59,8 +62,14 @@ class FirstPage extends Component {
           <View style={styles.row}>
             <View style={styles.column}>
             <Text style={{fontSize: 25,color: 'white',}}>From</Text>
+<<<<<<< HEAD
             <TextInput placeholder="Type amount" keyboardType="phone-pad" style={styles.textInput}
               onChangeText={(fromAmount) => this.setState({fromAmount})}
+=======
+            <TextInput placeholder="Type amount" keyboardType="numeric" style={styles.textInput}
+              onChangeText={(fromAmount) => this.setState({fromAmount})}
+              value={this.state.fromAmount}
+>>>>>>> a95f26eefc753ea43a148a6b1d73b29377452ed0
             />
             <Text style={styles.currency}
                 onPress={this.chooseStartCurrency.bind(this)}>{this.state.fromCurrency}</Text>
