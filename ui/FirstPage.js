@@ -18,7 +18,9 @@ class FirstPage extends Component {
     super(props);
     this.state = {
                   fromCurrency: "IDR",
-                  toCurrency: "AUD"
+                  toCurrency: "AUD",
+                  fromRate: 1,
+                  toRate: 0.000098786,
                   };
     this.receiveCurrency = this.receiveCurrency.bind(this);
   }
@@ -48,6 +50,7 @@ class FirstPage extends Component {
           />
     );
   }
+
   renderScene(route, navigator) {
     return (
       <View style={styles.container}>
@@ -55,7 +58,10 @@ class FirstPage extends Component {
           <View style={styles.row}>
             <View style={styles.column}>
             <Text style={{fontSize: 25,color: 'white',}}>From</Text>
-            <TextInput placeholder="Type amount" keyboardType="numeric" style={styles.textInput}/>
+            <TextInput placeholder="Type amount" keyboardType="numeric" style={styles.textInput}
+              onChangeText={(fromAmount) => this.setState({fromAmount})}
+              value={this.state.fromAmount}
+            />
             <Text style={styles.currency}
                 onPress={this.chooseStartCurrency.bind(this)}>{this.state.fromCurrency}</Text>
             </View>
@@ -64,7 +70,7 @@ class FirstPage extends Component {
           <View style={styles.row}>
             <View style={styles.column}>
               <Text style={{fontSize: 25,color: 'white'}}>To</Text>
-              <Text style={styles.outputText}>9500</Text>
+              <Text style={styles.outputText}>{(this.state.fromAmount/this.state.fromRate)*this.state.toRate}</Text>
               <Text style={styles.currency}
                   onPress={this.chooseTargetCurrency.bind(this)}>{this.state.toCurrency}</Text>
             </View>
