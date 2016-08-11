@@ -23,10 +23,20 @@ class FirstPage extends Component {
                   toRate: 0.000098786,
                   toAmount: 0,
                   };
-    var rate = '{"base":"IDR","date":"2016-08-10","rates":{"AUD":9.8786e-05,"BGN":0.00013371,"BRL":0.00023867,"CAD":9.9518e-05,"CHF":7.4674e-05,"CNY":0.00050705,"CZK":0.0018475,"DKK":0.00050852,"GBP":5.8479e-05,"HKD":0.00059305,"HRK":0.00051155,"HUF":0.021221,"ILS":0.00029121,"INR":0.0050952,"JPY":0.0077313,"KRW":0.083646,"MXN":0.0014009,"MYR":0.00030507,"NOK":0.00063285,"NZD":0.0001054,"PHP":0.0035638,"PLN":0.00029181,"RON":0.0003048,"RUB":0.0049279,"SEK":0.00064817,"SGD":0.00010233,"THB":0.0026566,"TRY":0.00022581,"USD":7.6458e-05,"ZAR":0.0010151,"EUR":6.8364e-05}}';
-    this.exchangeRate = JSON.parse(rate);
+
     this.calculateOutput = this.calculateOutput.bind(this);
     this.receiveCurrency = this.receiveCurrency.bind(this);
+  }
+  async getRateFromAPI(fromCurrency) {
+    console.log("fetching.."+fromCurrency);
+    try {
+      let response = await fetch('http://api.fixer.io/latest?base='+fromCurrency);
+      let responseJson = await response.json();
+      console.log(responseJson);
+      this.exchangeRate = responseJson;
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   calculateOutput(inputAmount, toRate) {
@@ -51,6 +61,7 @@ class FirstPage extends Component {
   }
 
   render() {
+    this.getRateFromAPI(this.state.fromCurrency);
     return (
       <Navigator
           renderScene={this.renderScene.bind(this)}
