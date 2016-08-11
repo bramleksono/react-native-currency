@@ -1,33 +1,42 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
+  Navigator,
 } from 'react-native';
 
-import Toolbar from "./ui/toolbar.js";
-import InputForm from "./ui/inputform.js";
+var FirstPage = require('./ui/FirstPage');
+var CurrencyPage = require('./ui/CurrencyPage');
 
 class currency extends Component {
   render() {
     return (
-      <View>
-        <Toolbar/>
-        <InputForm/>
-      </View>
+      <Navigator
+          initialRoute={{id: 'FirstPage'}}
+          renderScene={this.renderScene.bind(this)}
+          configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
+            }
+            return Navigator.SceneConfigs.FloatFromRight;
+          }} />
     );
   }
+  renderScene(route, navigator) {
+    var routeId = route.id;
+    if (routeId === 'FirstPage') {
+      return (
+        <FirstPage
+          navigator={navigator} data={route.passProps}/>
+      );
+    }
+    if (routeId === 'CurrencyPage') {
+      return (
+        <CurrencyPage
+            navigator={navigator} data={route.passProps}/>
+      );
+    }
+  }
 }
-
-const styles = StyleSheet.create({
-});
 
 AppRegistry.registerComponent('currency', () => currency);
