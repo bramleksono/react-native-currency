@@ -21,16 +21,22 @@ class FirstPage extends Component {
                   toCurrency: "AUD",
                   fromRate: 1,
                   toRate: 0.000098786,
-<<<<<<< HEAD
-                  fromAmount: 0,
-=======
->>>>>>> a95f26eefc753ea43a148a6b1d73b29377452ed0
+                  toAmount: 0,
                   };
+    var rate = '{"base":"IDR","date":"2016-08-10","rates":{"AUD":9.8786e-05,"BGN":0.00013371,"BRL":0.00023867,"CAD":9.9518e-05,"CHF":7.4674e-05,"CNY":0.00050705,"CZK":0.0018475,"DKK":0.00050852,"GBP":5.8479e-05,"HKD":0.00059305,"HRK":0.00051155,"HUF":0.021221,"ILS":0.00029121,"INR":0.0050952,"JPY":0.0077313,"KRW":0.083646,"MXN":0.0014009,"MYR":0.00030507,"NOK":0.00063285,"NZD":0.0001054,"PHP":0.0035638,"PLN":0.00029181,"RON":0.0003048,"RUB":0.0049279,"SEK":0.00064817,"SGD":0.00010233,"THB":0.0026566,"TRY":0.00022581,"USD":7.6458e-05,"ZAR":0.0010151,"EUR":6.8364e-05}}';
+    this.exchangeRate = JSON.parse(rate);
+    this.calculateOutput = this.calculateOutput.bind(this);
     this.receiveCurrency = this.receiveCurrency.bind(this);
   }
 
-  receiveCurrency(data) {
+  calculateOutput(inputAmount, toRate) {
+    var output = inputAmount*toRate;
+    this.setState({
+      toAmount: output,
+    });
+  }
 
+  receiveCurrency(data) {
     if (data.choose === 'start') {
       this.setState({
           fromCurrency: data.country,
@@ -62,14 +68,8 @@ class FirstPage extends Component {
           <View style={styles.row}>
             <View style={styles.column}>
             <Text style={{fontSize: 25,color: 'white',}}>From</Text>
-<<<<<<< HEAD
             <TextInput placeholder="Type amount" keyboardType="phone-pad" style={styles.textInput}
-              onChangeText={(fromAmount) => this.setState({fromAmount})}
-=======
-            <TextInput placeholder="Type amount" keyboardType="numeric" style={styles.textInput}
-              onChangeText={(fromAmount) => this.setState({fromAmount})}
-              value={this.state.fromAmount}
->>>>>>> a95f26eefc753ea43a148a6b1d73b29377452ed0
+              onChangeText={(fromAmount) => this.calculateOutput(fromAmount, this.exchangeRate.rates[this.state.toCurrency])}
             />
             <Text style={styles.currency}
                 onPress={this.chooseStartCurrency.bind(this)}>{this.state.fromCurrency}</Text>
@@ -79,7 +79,7 @@ class FirstPage extends Component {
           <View style={styles.row}>
             <View style={styles.column}>
               <Text style={{fontSize: 25,color: 'white'}}>To</Text>
-              <Text style={styles.outputText}>{(this.state.fromAmount/this.state.fromRate)*this.state.toRate}</Text>
+              <Text style={styles.outputText}>{this.state.toAmount}</Text>
               <Text style={styles.currency}
                   onPress={this.chooseTargetCurrency.bind(this)}>{this.state.toCurrency}</Text>
             </View>
