@@ -12,7 +12,7 @@ import {
  TouchableOpacity,
 } from 'react-native';
 
-var countryData = [{"country":"Australia","symbol":"AUD"},{"country":"Indonesia","symbol":"IDR"}];
+var countryData = [{"country":"US","symbol":"USD"},{"country":"Japan","symbol":"JPY"},{"country":"Bulgaria","symbol":"BGN"},{"country":"Czech","symbol":"CZK"},{"country":"Denmark","symbol":"DKK"},{"country":"Great Britain","symbol":"GBP"},{"country":"Hungaria","symbol":"HUF"},{"country":"Poland","symbol":"PLN"},{"country":"Romania","symbol":"RON"},{"country":"Sweden","symbol":"SEK"},{"country":"Switzerland","symbol":"CHF"},{"country":"Norwegia","symbol":"NOK"},{"country":"Croatia","symbol":"HRK"},{"country":"Russia","symbol":"RUB"},{"country":"Turkey","symbol":"TRY"},{"country":"Australia","symbol":"AUD"},{"country":"Brazil","symbol":"BRL"},{"country":"Canada","symbol":"CAD"},{"country":"China","symbol":"CNY"},{"country":"Hongkong","symbol":"HKD"},{"country":"Indonesia","symbol":"IDR"},{"country":"Israel","symbol":"ILS"},{"country":"India","symbol":"INR"},{"country":"South Korea","symbol":"KRW"},{"country":"Mexico","symbol":"MXN"},{"country":"Malaysia","symbol":"MYR"},{"country":"New Zealand","symbol":"NZD"},{"country":"Philippine","symbol":"PHP"},{"country":"Singapore","symbol":"SGD"},{"country":"Thailand","symbol":"THB"},{"country":"South Africa","symbol":"ZAR"},{"country":"Iceland","symbol":"ISK"}];
 
 class CurrencyPage extends Component {
   constructor(props) {
