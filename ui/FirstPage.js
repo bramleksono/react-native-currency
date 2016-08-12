@@ -30,7 +30,7 @@ class FirstPage extends Component {
   async getRateFromAPI(fromCurrency) {
     console.log("fetching.."+fromCurrency);
     try {
-      let response = await fetch('http://api.fixer.io/latest?base='+fromCurrency);
+      let response = await fetch('https://api.fixer.io/latest?base='+fromCurrency);
       let responseJson = await response.json();
       console.log(responseJson);
       this.exchangeRate = responseJson;
@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
   textInput: {
     fontSize: 50,
     color: 'white',
+    height: 80,
     width: 400,
     textAlign: 'center',
   },
