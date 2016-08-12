@@ -38,7 +38,6 @@ class FirstPage extends Component {
       console.error(error);
     }
   }
-
   calculateOutput(inputAmount) {
     var toRate = 1;
     if (this.state.fromCurrency != this.state.toCurrency) {
@@ -52,12 +51,16 @@ class FirstPage extends Component {
       toAmount: output,
     });
   }
-
   receiveCurrency(data) {
     if (data.choose === 'start') {
-      this.setState({
-          fromCurrency: data.country,
-      });
+      if (this.state.fromCurrency != data.country) {
+        //changing from currency, refresh data and ui
+        console.log("changing country");
+        this.getRateFromAPI(data.country);
+        this.setState({
+            fromCurrency: data.country,
+        });
+      }
     }
     if (data.choose === 'target') {
       this.setState({
@@ -66,7 +69,6 @@ class FirstPage extends Component {
     }
   }
   componentWillReceiveProps(nextProps) {
-    this.getRateFromAPI(this.state.fromCurrency);
     //reset amount
     this.setState({
       fromAmount: "",
