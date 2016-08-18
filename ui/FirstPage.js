@@ -9,6 +9,7 @@ import {
  Navigator,
  TextInput,
  TouchableOpacity,
+ Animated,
 } from 'react-native';
 
 import Toolbar from "./toolbar.js";
@@ -17,26 +18,29 @@ class FirstPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+                  fadeAnim: new Animated.Value(0), // init opacity 0
                   fromCurrency: "IDR",
                   toCurrency: "AUD",
                   fromRate: 1,
                   toRate: 0.000098786,
                   toAmount: 0,
+                  USDRate: 1,
                   };
     this.getRateFromAPI(this.state.fromCurrency);
     this.calculateOutput = this.calculateOutput.bind(this);
     this.receiveCurrency = this.receiveCurrency.bind(this);
   }
+
   async getRateFromAPI(fromCurrency) {
     console.log("fetching.."+fromCurrency);
     try {
       let response = await fetch('https://api.fixer.io/latest?base='+fromCurrency);
       let responseJson = await response.json();
-      console.log(responseJson);
       this.exchangeRate = responseJson;
     } catch(error) {
       console.error(error);
     }
+    this.calculateRate();
   }
   calculateOutput(inputAmount) {
     var toRate = 1;
@@ -46,10 +50,15 @@ class FirstPage extends Component {
 
     inputAmount = inputAmount.replace(/\D/g,'');
     var output = inputAmount*toRate;
+    output = this.roundDecimal(output);
     this.setState({
       fromAmount: inputAmount,
       toAmount: output,
     });
+  }
+  roundDecimal(number) {
+    number = +number.toFixed(2);
+    return number;
   }
   receiveCurrency(data) {
     if (data.choose === 'start') {
@@ -68,6 +77,13 @@ class FirstPage extends Component {
       });
     }
   }
+  componentDidMount() {
+    //entrance animation
+    Animated.timing(    
+      this.state.fadeAnim,
+      {toValue: 1}
+    ).start();
+   }
   componentWillReceiveProps(nextProps) {
     //reset amount
     this.setState({
@@ -75,6 +91,25 @@ class FirstPage extends Component {
       toAmount: "0",
     });
   }
+
+  calculateRate() {
+    //calculate from rate to USD
+    var rate;
+    if (this.state.fromCurrency === "USD") {
+      rate = 1;
+    }
+    else {
+      rate = this.exchangeRate.rates["USD"];
+    }
+    rate = 1/rate;
+    rate = this.roundDecimal(rate);
+    console.log("getting rate: "+rate);
+    this.setState({
+      USDRate: rate,
+    });
+
+  }
+
   render() {
     return (
       <Navigator
@@ -89,8 +124,8 @@ class FirstPage extends Component {
 
   renderScene(route, navigator) {
     return (
-      <View style={styles.container}>
-        <View style={styles.circle}>
+      <View style={styles.mainContainer}>
+        <Animated.View style={[styles.circle, {opacity: this.state.fadeAnim}]}>
           <View style={styles.row}>
             <View style={styles.column}>
             <Text style={{fontSize: 25,color: 'white',}}>From</Text>
@@ -111,6 +146,11 @@ class FirstPage extends Component {
                   onPress={this.chooseTargetCurrency.bind(this)}>{this.state.toCurrency}</Text>
             </View>
           </View>
+        </Animated.View>
+        <View style={styles.rateContainer}>
+        <Text style={styles.rateText}>
+        USD Rate : {this.state.USDRate} {this.state.fromCurrency}
+        </Text>
         </View>
       </View>
     );
@@ -151,7 +191,7 @@ var NavigationBarRouteMapper = {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor:'#1f2427',
     justifyContent: 'center',
@@ -201,6 +241,22 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     width: 500,
   },
+  rateContainer: {
+    backgroundColor:'grey',
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 20,
+  },
+  rateText: {
+    flex: 1,
+    fontSize: 30,
+    color: 'white',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    }
 });
 
 module.exports = FirstPage;
