@@ -12,8 +12,6 @@ import {
  Animated,
 } from 'react-native';
 
-import Toolbar from "./toolbar.js";
-
 class FirstPage extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +33,7 @@ class FirstPage extends Component {
   async getRateFromAPI(fromCurrency) {
     console.log("fetching.."+fromCurrency);
     try {
-      let response = await fetch('https://api.fixer.io/latest?base='+fromCurrency);
+      let response = await fetch('http://api.fixer.io/latest?base='+fromCurrency);
       let responseJson = await response.json();
       this.setState({
         exchangeRate: responseJson,
