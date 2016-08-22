@@ -25,6 +25,7 @@ class FirstPage extends Component {
                   toRate: 0.000098786,
                   toAmount: 0,
                   USDRate: 1,
+                  exchangeRate: 0,
                   };
     this.getRateFromAPI(this.state.fromCurrency);
     this.calculateOutput = this.calculateOutput.bind(this);
@@ -36,7 +37,9 @@ class FirstPage extends Component {
     try {
       let response = await fetch('https://api.fixer.io/latest?base='+fromCurrency);
       let responseJson = await response.json();
-      this.exchangeRate = responseJson;
+      this.setState({
+        exchangeRate: responseJson,
+      });
     } catch(error) {
       console.error(error);
     }
@@ -45,7 +48,7 @@ class FirstPage extends Component {
   calculateOutput(inputAmount) {
     var toRate = 1;
     if (this.state.fromCurrency != this.state.toCurrency) {
-      toRate = this.exchangeRate.rates[this.state.toCurrency]
+      toRate = this.state.exchangeRate.rates[this.state.toCurrency]
     }
 
     inputAmount = inputAmount.replace(/\D/g,'');
@@ -99,7 +102,7 @@ class FirstPage extends Component {
       rate = 1;
     }
     else {
-      rate = this.exchangeRate.rates["USD"];
+      rate = this.state.exchangeRate.rates["USD"];
     }
     rate = 1/rate;
     rate = this.roundDecimal(rate);
@@ -182,7 +185,7 @@ var NavigationBarRouteMapper = {
   Title(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 40, fontWeight: 'bold'}}>
+        <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}>
           Currency Converter
         </Text>
       </TouchableOpacity>
@@ -206,30 +209,28 @@ const styles = StyleSheet.create({
   row: {
     flex: 2,
     flexDirection: 'row',
-    paddingTop: 20,
-    paddingBottom: 20,
     alignItems: 'center',
   },
   currency: {
-    fontSize: 80,
+    fontSize: 30,
     color: 'gold',
     fontWeight: 'bold',
   },
   outputText: {
-    fontSize: 50,
+    fontSize: 25,
     color: 'white',
   },
   textInput: {
-    fontSize: 50,
+    fontSize: 25,
     color: 'white',
-    height: 80,
-    width: 400,
+    height: 50,
+    width: 200,
     textAlign: 'center',
   },
   circle: {
-    width: 600,
-    height: 600,
-    borderRadius: 600/2,
+    width: 300,
+    height: 300,
+    borderRadius: 300/2,
     backgroundColor: '#11bdff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -249,13 +250,12 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   rateText: {
-    flex: 1,
-    fontSize: 30,
+    fontSize: 20,
     color: 'white',
     textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
+    margin: 10,
     }
 });
 

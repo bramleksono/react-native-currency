@@ -219,7 +219,7 @@ var NavigationBarRouteMapper = {
   Title(route, navigator, index, navState) {
     return (
       <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
-        <Text style={{color: 'white', margin: 10, fontSize: 40, fontWeight: 'bold'}}
+        <Text style={{color: 'white', fontSize: 25, fontWeight: 'bold'}}
         onPress={() => navigator.parentNavigator.pop()}>Choose Currency</Text>
       </TouchableOpacity>
     );
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flagimg: {
-    height: 60,
-    width: 150,
+    height: 50,
+    width: 100,
   },
   wrapper: {
     flexDirection: 'row',
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e9e9e9',
   },
   outputText: {
-    fontSize: 50,
+    fontSize: 20,
     color: 'white',
   },
 });
